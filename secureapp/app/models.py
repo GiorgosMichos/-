@@ -2,8 +2,8 @@ from supabase import create_client, Client
 import os
 from datetime import datetime
 
-SUPABASE_URL = os.getenv('SUPABASE_URL', 'https://mdeslfmtufjosscpogfe.supabase.co')
-SUPABASE_KEY = os.getenv('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZXNsZm10dWZqb3NzY3BvZ2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcyMDIxNDcsImV4cCI6MjA0Mjc3ODE0N30.f8tLrFp6Fu90xYWT-YAqi4sH_DYjFtpCIUc50vVTgYU')
+SUPABASE_URL = os.getenv('SUPABASE_URL', 'https://****.supabase.co')
+SUPABASE_KEY = os.getenv('SUPABASE_KEY', '*****')
 
 # Initialize Supabase client
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
