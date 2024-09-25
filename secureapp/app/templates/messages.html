@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Messages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 15px;
+            text-align: left;
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff;
+            padding: 15px;
+        }
+        .navbar h3 {
+            color: white;
+            margin: 0;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .flash-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="{{ url_for('user_profile') }}"><i class="fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('view_messages') }}"><i class="fas fa-envelope"></i> Messages</a>
+
+        <!-- Admin-Only Links -->
+        {% if user.role == 'admin' %}
+            <a href="{{ url_for('admin_manage_messages') }}"><i class="fas fa-users"></i> Admin Messages</a>
+            <a href="{{ url_for('admin_manage_users') }}"><i class="fas fa-users-cog"></i> Manage Users</a>
+            <a href="{{ url_for('add_user') }}"><i class="fas fa-user-plus"></i> Add User</a>
+        {% endif %}
+
+        <a href="{{ url_for('upload') }}"><i class="fas fa-upload"></i> Upload</a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Navbar -->
+        <div class="navbar">
+            <h3>Messages</h3>
+        </div>
+
+        <!-- Flash Messages -->
+        <div class="flash-message">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Messages Section -->
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>User Messages</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Sender</th>
+                                    <th>Message</th>
+                                    <th>File</th> <!-- New Column for File -->
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+								   {% for msg in messages %}
+							<tr>
+								<td>{{ msg.sender }}</td>
+								<td>{{ msg.message }}</td>
+								<td>
+									{% if msg.file_name %}
+										<a href="{{ url_for('static', filename='uploads/' + msg.file_name) }}" target="_blank">Download</a>
+									{% else %}
+										No File
+									{% endif %}
+								</td>
+								<td>{{ msg.created_at }}</td>
+							</tr>
+							{% endfor %}
+
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No messages yet!</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Message Form Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Send a Message</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('send_message') }}" method="POST" enctype="multipart/form-data">
+                        <input type="email" name="recipient" placeholder="Recipient Email" required class="form-control mb-2">
+                        <textarea name="message" placeholder="Type your message" required class="form-control mb-2"></textarea>
+                        <input type="file" name="file" class="form-control mb-2">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-4">Back to Dashboard</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        setTimeout(function() {
+            const flashMessages = document.querySelectorAll('.alert');
+            flashMessages.forEach(function(message) {
+                message.classList.remove('show');
+                message.classList.add('fade');
+                setTimeout(() => message.remove(), 1500);
+            });
+        }, 3000);
+    </script>
+</body>
+</html>

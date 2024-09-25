@@ -1,0 +1,11 @@
+<form action="{{ url_for('send_message') }}" method="POST">
+    <div>
+        <label for="recipient">Recipient</label>
+        <input type="text" name="recipient" id="recipient" placeholder="Enter recipient email" required>
+    </div>
+    <div>
+        <label for="message">Message</label>
+        <textarea name="message" id="message" placeholder="Type your message" required></textarea>
+    </div>
+    <button type="submit">Send Message</button>
+</form>

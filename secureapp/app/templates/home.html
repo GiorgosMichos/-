@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ασφαλής Εφαρμογή Μηνυμάτων</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .btn {
+            margin-top: 20px;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Καλώς ήρθατε στην Ασφαλή Εφαρμογή Μηνυμάτων</h1>
+        <p>Αυτή η εφαρμογή σας επιτρέπει να αποστέλλετε ασφαλή μηνύματα. Οι διαχειριστές μπορούν να διαχειριστούν, να επεξεργαστούν, να διαγράψουν και να προσθέσουν μηνύματα και χρήστες.</p>
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Σύνδεση</a>
+        <a href="{{ url_for('register') }}" class="btn btn-success">Εγγραφή</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-info">Πίνακας Ελέγχου</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

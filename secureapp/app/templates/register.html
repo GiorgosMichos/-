@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SecureApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-4">
+                        <h3 class="text-center mb-4">Create an Account</h3>
+
+                        <!-- Flash Messages -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <div class="alert-container">
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+
+                        <!-- Registration Form -->
+                        <form action="{{ url_for('register') }}" method="POST" novalidate>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">Please enter a valid email.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback">Please enter a password.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <div class="invalid-feedback">Passwords must match.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <div class="invalid-feedback">Please enter your name.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your role.</div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <p class="small">Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Custom form validation for matching passwords
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+
+            form.addEventListener('submit', function(event) {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Passwords don't match");
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            });
+        });
+    </script>
+</body>
+</html>
